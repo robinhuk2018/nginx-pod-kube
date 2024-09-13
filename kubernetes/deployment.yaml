@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 3 # Số lượng Pod Nginx bạn muốn chạy
+  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -16,6 +16,19 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:latest # Sử dụng image Nginx mới nhất
+        image: nginx:latest  # Sử dụng phiên bản mới nhất của Nginx
         ports:
-        - containerPort: 80 # Cổng mà container Nginx sẽ lắng nghe
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer  # Có thể thay đổi thành ClusterIP tùy theo nhu cầu sử dụng
